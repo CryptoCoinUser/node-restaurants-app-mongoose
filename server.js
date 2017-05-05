@@ -16,6 +16,7 @@ app.use(bodyParser.json());
 
 
 // GET requests to /restaurants => return 10 restaurants
+/*
 app.get('/restaurants', (req, res) => {
   Restaurant
     .find()
@@ -39,8 +40,34 @@ app.get('/restaurants', (req, res) => {
         res.status(500).json({message: 'Internal server error'});
     });
 });
+*/
+app.get('/restaurants', (req, res) => {
+    const filters = {};
+    const queryableFields = ['cuisine', 'borough'];
+    queryableFields.forEach(field => {
+        if (req.query[field]) {
+            filters[field] = req.query[field];
+        }
+    });
+    Restaurant
+        .find(filters)
+        .limit(99)
+        .exec()
+        .then(Restaurants => res.json(
+            Restaurants.map(restaurant => restaurant.apiRepr())
+        ))
+        .catch(err => {
+            console.error(err);
+            res.status(500).json({message: 'Internal server error'})
+        });
+});
+
+
+
+
 
 // can also request by ID
+/**/
 app.get('/restaurants/:id', (req, res) => {
   Restaurant
     // this is a convenience method Mongoose provides for searching
@@ -50,9 +77,10 @@ app.get('/restaurants/:id', (req, res) => {
     .then(restaurant =>res.json(restaurant.apiRepr()))
     .catch(err => {
       console.error(err);
-        res.status(500).json({message: 'Internal server error'})
+        res.status(500).json({message: 'Internal server error OR no restaurant witht that ID'})
     });
 });
+
 
 
 app.post('/restaurants', (req, res) => {
@@ -75,7 +103,10 @@ app.post('/restaurants', (req, res) => {
       grades: req.body.grades,
       address: req.body.address})
     .then(
-      restaurant => res.status(201).json(restaurant.apiRepr()))
+      restaurant => {
+        console.log(restaurant);
+        res.status(201).json(restaurant.apiRepr())
+      })
     .catch(err => {
       console.error(err);
       res.status(500).json({message: 'Internal server error'});
