@@ -163,7 +163,7 @@ describe('Restaurants API resource', function() {
           resRestaurant.grade.should.equal(restaurant.grade);
         });
     });
-  });
+  }); /// END OF GET
 
   describe('POST endpoint', function() {
     // strategy: make a POST request with data,
@@ -207,7 +207,7 @@ describe('Restaurants API resource', function() {
           restaurant.address.zipcode.should.equal(newRestaurant.address.zipcode);
         });
     });
-  });
+  });  // END OF POST
 
   describe('PUT endpoint', function() {
 
@@ -244,7 +244,7 @@ describe('Restaurants API resource', function() {
           restaurant.cuisine.should.equal(updateData.cuisine);
         });
       });
-  });
+  }); /// END OF PUT
 
   describe('DELETE endpoint', function() {
     // strategy:
@@ -275,5 +275,15 @@ describe('Restaurants API resource', function() {
           should.not.exist(_restaurant);
         });
     });
-  });
+  });  // END OF DELETE
 });
+
+
+
+
+
+
+
+
+
+
